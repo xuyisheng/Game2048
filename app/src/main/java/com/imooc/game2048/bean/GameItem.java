@@ -2,102 +2,113 @@ package com.imooc.game2048.bean;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.TextPaint;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.imooc.game2048.config.Config;
+
 public class GameItem extends FrameLayout {
 
     // Item显示数字
-    private int cardShowNum;
+    private int mCardShowNum;
     // Item显示颜色
-    private int colorShow;
+    private int mColorShow;
     // 数字Title
-    private TextView tvNum;
+    private TextView mTvNum;
     // 数字Title LayoutParams
-    private LayoutParams params;
+    private LayoutParams mParams;
 
-    public GameItem(Context context, int cardShowNum) {
+    public GameItem(Context context, int mCardShowNum) {
         super(context);
-        this.cardShowNum = cardShowNum;
+        this.mCardShowNum = mCardShowNum;
         // 初始化Item
         initCardItem();
     }
 
     /**
      * 初始化Item
-     *
-     * @param context
-     * @param cardShowNum
      */
     private void initCardItem() {
-        // 设置背景色
+        // 设置面板背景色，是由Frame拼起来的
         setBackgroundColor(Color.GRAY);
-        tvNum = new TextView(getContext());
-        setNum(cardShowNum);
-        tvNum.setTextSize(30);
-        tvNum.setGravity(Gravity.CENTER);
-        params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        params.setMargins(5, 5, 5, 5);
-        addView(tvNum, params);
+        mTvNum = new TextView(getContext());
+        setNum(mCardShowNum);
+        // 修改5X5时字体太大
+        int gameLines = Config.mSp.getInt(Config.KEY_GAME_LINES, 4);
+        if (gameLines == 4) {
+            mTvNum.setTextSize(35);
+        } else if (gameLines == 5) {
+            mTvNum.setTextSize(25);
+        } else {
+            mTvNum.setTextSize(20);
+        }
+        TextPaint tp = mTvNum.getPaint();
+        tp.setFakeBoldText(true);
+        mTvNum.setGravity(Gravity.CENTER);
+        mParams = new LayoutParams(LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT);
+        mParams.setMargins(5, 5, 5, 5);
+        addView(mTvNum, mParams);
     }
 
     public View getItemView() {
-        return tvNum;
+        return mTvNum;
     }
 
     public int getNum() {
-        return cardShowNum;
+        return mCardShowNum;
     }
 
     public void setNum(int num) {
-        this.cardShowNum = num;
+        this.mCardShowNum = num;
         if (num == 0) {
-            tvNum.setText("");
+            mTvNum.setText("");
         } else {
-            tvNum.setText("" + num);
+            mTvNum.setText("" + num);
         }
         // 设置背景颜色
         switch (num) {
             case 0:
-                tvNum.setBackgroundColor(0x00000000);
+                mTvNum.setBackgroundColor(0x00000000);
                 break;
             case 2:
-                tvNum.setBackgroundColor(0xffeee4da);
+                mTvNum.setBackgroundColor(0xffeee4da);
                 break;
             case 4:
-                tvNum.setBackgroundColor(0xffede0c8);
+                mTvNum.setBackgroundColor(0xffede0c8);
                 break;
             case 8:
-                tvNum.setBackgroundColor(0xfff2b179);
+                mTvNum.setBackgroundColor(0xfff2b179);
                 break;
             case 16:
-                tvNum.setBackgroundColor(0xfff59563);
+                mTvNum.setBackgroundColor(0xfff59563);
                 break;
             case 32:
-                tvNum.setBackgroundColor(0xfff67c5f);
+                mTvNum.setBackgroundColor(0xfff67c5f);
                 break;
             case 64:
-                tvNum.setBackgroundColor(0xfff65e3b);
+                mTvNum.setBackgroundColor(0xfff65e3b);
                 break;
             case 128:
-                tvNum.setBackgroundColor(0xffedcf72);
+                mTvNum.setBackgroundColor(0xffedcf72);
                 break;
             case 256:
-                tvNum.setBackgroundColor(0xffedcc61);
+                mTvNum.setBackgroundColor(0xffedcc61);
                 break;
             case 512:
-                tvNum.setBackgroundColor(0xffedc850);
+                mTvNum.setBackgroundColor(0xffedc850);
                 break;
             case 1024:
-                tvNum.setBackgroundColor(0xffedc53f);
+                mTvNum.setBackgroundColor(0xffedc53f);
                 break;
             case 2048:
-                tvNum.setBackgroundColor(0xffedc22e);
+                mTvNum.setBackgroundColor(0xffedc22e);
                 break;
             default:
-                tvNum.setBackgroundColor(0xff3c3a32);
+                mTvNum.setBackgroundColor(0xff3c3a32);
                 break;
         }
     }

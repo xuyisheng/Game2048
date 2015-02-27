@@ -8,6 +8,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.imooc.game2048.R;
@@ -20,23 +21,23 @@ public class Game extends Activity implements OnClickListener {
     // Activity的引用
     private static Game mGame;
     // 记录分数
-    private TextView tvScore;
+    private TextView mTvScore;
     // 历史记录分数
-    private TextView tvHighScore;
-    private int highScore;
+    private TextView mTvHighScore;
+    private int mHighScore;
     // 目标分数
-    private TextView tvGoal;
-    private int goal;
+    private TextView mTvGoal;
+    private int mGoal;
     // 重新开始按钮
-    private Button btnRestart;
+    private Button mBtnRestart;
     // 撤销按钮
-    private Button btnRevert;
+    private Button mBtnRevert;
     // 选项按钮
-    private Button btnOptions;
+    private Button mBtnOptions;
     // 游戏面板
-    private GameView gameView;
+    private GameView mGameView;
     // 动画层
-    private AnimationLayer animLayer;
+    private AnimationLayer mAnimLayer;
 
     public Game() {
         mGame = this;
@@ -45,7 +46,7 @@ public class Game extends Activity implements OnClickListener {
     /**
      * 获取当前Activity的引用
      *
-     * @return
+     * @return Activity.this
      */
     public static Game getGameActivity() {
         return mGame;
@@ -57,56 +58,63 @@ public class Game extends Activity implements OnClickListener {
         setContentView(R.layout.activity_main);
         // 初始化View
         initView();
-        animLayer = new AnimationLayer(this);
-        gameView = new GameView(this);
-        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.fff);
-        frameLayout.addView(animLayer, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        frameLayout.addView(gameView, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        mAnimLayer = new AnimationLayer(this);
+        mGameView = new GameView(this);
+        FrameLayout frameLayout = (FrameLayout) findViewById(R.id.game_panel);
+        // 为了GameView能居中
+        RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.game_panel_rl);
+        frameLayout.addView(mAnimLayer, new LayoutParams(
+                LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        relativeLayout.addView(mGameView);
     }
 
     /**
      * 获取当前动画层引用
      *
-     * @return
+     * @return AnimationLayer.this
      */
     public AnimationLayer getAnimationLayer() {
-        return animLayer;
+        return mAnimLayer;
     }
 
     /**
      * 初始化View
      */
     private void initView() {
-        tvScore = (TextView) findViewById(R.id.scroe);
-        tvGoal = (TextView) findViewById(R.id.tv_Goal);
-        tvHighScore = (TextView) findViewById(R.id.record);
-        btnRestart = (Button) findViewById(R.id.btn_restart);
-        btnRevert = (Button) findViewById(R.id.btn_revert);
-        btnOptions = (Button) findViewById(R.id.btn_option);
-        btnRestart.setOnClickListener(this);
-        btnRevert.setOnClickListener(this);
-        btnOptions.setOnClickListener(this);
-        highScore = Config.sp.getInt(Config.KEY_HighScore, 0);
-        goal = Config.sp.getInt(Config.KEY_GameGoal, 2048);
-        tvHighScore.setText("" + highScore);
-        tvGoal.setText("" + goal);
-        tvScore.setText("0");
+        mTvScore = (TextView) findViewById(R.id.scroe);
+        mTvGoal = (TextView) findViewById(R.id.tv_Goal);
+        mTvHighScore = (TextView) findViewById(R.id.record);
+        mBtnRestart = (Button) findViewById(R.id.btn_restart);
+        mBtnRevert = (Button) findViewById(R.id.btn_revert);
+        mBtnOptions = (Button) findViewById(R.id.btn_option);
+        mBtnRestart.setOnClickListener(this);
+        mBtnRevert.setOnClickListener(this);
+        mBtnOptions.setOnClickListener(this);
+        mHighScore = Config.mSp.getInt(Config.KEY_HIGH_SCROE, 0);
+        mGoal = Config.mSp.getInt(Config.KEY_GAME_GOAL, 2048);
+        mTvHighScore.setText("" + mHighScore);
+        mTvGoal.setText("" + mGoal);
+        mTvScore.setText("0");
         setScore(0, 0);
+    }
+
+    public void setGoal(int num) {
+        mTvGoal.setText(String.valueOf(num));
     }
 
     /**
      * 修改得分
      *
-     * @param score
+     * @param score score
      * @param flag  0 : score 1 : high score
      */
     public void setScore(int score, int flag) {
         switch (flag) {
             case 0:
-                tvScore.setText("" + score);
+                mTvScore.setText("" + score);
                 break;
             case 1:
-                tvHighScore.setText("" + score);
+                mTvHighScore.setText("" + score);
                 break;
             default:
                 break;
@@ -117,11 +125,11 @@ public class Game extends Activity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_restart:
-                gameView.startGame();
+                mGameView.startGame();
                 setScore(0, 0);
                 break;
             case R.id.btn_revert:
-                gameView.revertGame();
+                mGameView.revertGame();
                 break;
             case R.id.btn_option:
                 Intent intent = new Intent(Game.this, ConfigPreference.class);
@@ -133,13 +141,18 @@ public class Game extends Activity implements OnClickListener {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            goal = Config.sp.getInt(Config.KEY_GameGoal, 2048);
-            tvGoal.setText("" + goal);
+            mGoal = Config.mSp.getInt(Config.KEY_GAME_GOAL, 2048);
+            mTvGoal.setText("" + mGoal);
             getHighScore();
-            gameView.startGame();
+            mGameView.startGame();
         }
     }
 
@@ -147,7 +160,7 @@ public class Game extends Activity implements OnClickListener {
      * 获取最高记录
      */
     private void getHighScore() {
-        int score = Config.sp.getInt(Config.KEY_HighScore, 0);
+        int score = Config.mSp.getInt(Config.KEY_HIGH_SCROE, 0);
         setScore(score, 1);
     }
 }

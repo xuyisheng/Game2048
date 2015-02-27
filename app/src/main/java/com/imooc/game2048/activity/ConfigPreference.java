@@ -14,19 +14,19 @@ import com.imooc.game2048.config.Config;
 
 public class ConfigPreference extends Activity implements OnClickListener {
 
-    private Button btnGameLines;
+    private Button mBtnGameLines;
 
-    private Button btnGoal;
+    private Button mBtnGoal;
 
-    private Button btnBack;
+    private Button mBtnBack;
 
-    private Button btnDone;
+    private Button mBtnDone;
 
-    private String[] gameLinesList;
+    private String[] mGameLinesList;
 
-    private String[] gameGoalList;
+    private String[] mGameGoalList;
 
-    private AlertDialog.Builder builder;
+    private AlertDialog.Builder mBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,24 +36,26 @@ public class ConfigPreference extends Activity implements OnClickListener {
     }
 
     private void initView() {
-        btnGameLines = (Button) findViewById(R.id.btn_gamelines);
-        btnGoal = (Button) findViewById(R.id.btn_goal);
-        btnBack = (Button) findViewById(R.id.btn_back);
-        btnDone = (Button) findViewById(R.id.btn_done);
-        btnGameLines.setText("" + Config.sp.getInt(Config.KEY_GameLines, 4));
-        btnGoal.setText("" + Config.sp.getInt(Config.KEY_GameGoal, 2048));
-        btnGameLines.setOnClickListener(this);
-        btnGoal.setOnClickListener(this);
-        btnBack.setOnClickListener(this);
-        btnDone.setOnClickListener(this);
-        gameLinesList = new String[]{"4", "5", "6"};
-        gameGoalList = new String[]{"1024", "2048", "4096"};
+        mBtnGameLines = (Button) findViewById(R.id.btn_gamelines);
+        mBtnGoal = (Button) findViewById(R.id.btn_goal);
+        mBtnBack = (Button) findViewById(R.id.btn_back);
+        mBtnDone = (Button) findViewById(R.id.btn_done);
+        mBtnGameLines.setText("" + Config.mSp.getInt(Config.KEY_GAME_LINES, 4));
+        mBtnGoal.setText("" + Config.mSp.getInt(Config.KEY_GAME_GOAL, 2048));
+        mBtnGameLines.setOnClickListener(this);
+        mBtnGoal.setOnClickListener(this);
+        mBtnBack.setOnClickListener(this);
+        mBtnDone.setOnClickListener(this);
+        mGameLinesList = new String[]{"4", "5", "6"};
+        mGameGoalList = new String[]{"1024", "2048", "4096"};
     }
 
     private void saveConfig() {
-        Editor editor = Config.sp.edit();
-        editor.putInt(Config.KEY_GameLines, Integer.parseInt(btnGameLines.getText().toString()));
-        editor.putInt(Config.KEY_GameGoal, Integer.parseInt(btnGoal.getText().toString()));
+        Editor editor = Config.mSp.edit();
+        editor.putInt(Config.KEY_GAME_LINES,
+                Integer.parseInt(mBtnGameLines.getText().toString()));
+        editor.putInt(Config.KEY_GAME_GOAL,
+                Integer.parseInt(mBtnGoal.getText().toString()));
         editor.commit();
     }
 
@@ -61,28 +63,30 @@ public class ConfigPreference extends Activity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_gamelines:
-                builder = new AlertDialog.Builder(this);
-                builder.setTitle("choose the lines of the game");
-                builder.setItems(gameLinesList, new DialogInterface.OnClickListener() {
+                mBuilder = new AlertDialog.Builder(this);
+                mBuilder.setTitle("choose the lines of the game");
+                mBuilder.setItems(mGameLinesList,
+                        new DialogInterface.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        btnGameLines.setText(gameLinesList[which]);
-                    }
-                });
-                builder.create().show();
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mBtnGameLines.setText(mGameLinesList[which]);
+                            }
+                        });
+                mBuilder.create().show();
                 break;
             case R.id.btn_goal:
-                builder = new AlertDialog.Builder(this);
-                builder.setTitle("choose the goal of the game");
-                builder.setItems(gameGoalList, new DialogInterface.OnClickListener() {
+                mBuilder = new AlertDialog.Builder(this);
+                mBuilder.setTitle("choose the goal of the game");
+                mBuilder.setItems(mGameGoalList,
+                        new DialogInterface.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        btnGoal.setText(gameGoalList[which]);
-                    }
-                });
-                builder.create().show();
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                mBtnGoal.setText(mGameGoalList[which]);
+                            }
+                        });
+                mBuilder.create().show();
                 break;
             case R.id.btn_back:
                 this.finish();
