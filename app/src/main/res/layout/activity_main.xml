@@ -117,7 +117,8 @@
             android:layout_margin="3dp"
             android:layout_weight="1"
             android:background="@drawable/blue_button"
-            android:text="Revert" />
+            android:text="Revert"
+            android:textColor="@android:color/black" />
 
         <Button
             android:id="@+id/btn_restart"
@@ -127,16 +128,19 @@
             android:layout_margin="3dp"
             android:layout_weight="1"
             android:background="@drawable/blue_button"
-            android:text="Restart" />
+            android:text="Restart"
+            android:textColor="@android:color/black" />
 
         <Button
             android:id="@+id/btn_option"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
             android:layout_weight="1"
             android:background="@drawable/blue_button"
-            android:text="Options" />
+            android:text="Options"
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
 </LinearLayout>

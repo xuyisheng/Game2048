@@ -14,16 +14,14 @@ public class GameItem extends FrameLayout {
 
     // Item显示数字
     private int mCardShowNum;
-    // Item显示颜色
-    private int mColorShow;
     // 数字Title
     private TextView mTvNum;
     // 数字Title LayoutParams
     private LayoutParams mParams;
 
-    public GameItem(Context context, int mCardShowNum) {
+    public GameItem(Context context, int cardShowNum) {
         super(context);
-        this.mCardShowNum = mCardShowNum;
+        this.mCardShowNum = cardShowNum;
         // 初始化Item
         initCardItem();
     }
@@ -75,40 +73,40 @@ public class GameItem extends FrameLayout {
                 mTvNum.setBackgroundColor(0x00000000);
                 break;
             case 2:
-                mTvNum.setBackgroundColor(0xffeee4da);
+                mTvNum.setBackgroundColor(0xffeee5db);
                 break;
             case 4:
-                mTvNum.setBackgroundColor(0xffede0c8);
+                mTvNum.setBackgroundColor(0xffeee0ca);
                 break;
             case 8:
-                mTvNum.setBackgroundColor(0xfff2b179);
+                mTvNum.setBackgroundColor(0xfff2c17a);
                 break;
             case 16:
-                mTvNum.setBackgroundColor(0xfff59563);
+                mTvNum.setBackgroundColor(0xfff59667);
                 break;
             case 32:
-                mTvNum.setBackgroundColor(0xfff67c5f);
+                mTvNum.setBackgroundColor(0xfff68c6f);
                 break;
             case 64:
-                mTvNum.setBackgroundColor(0xfff65e3b);
+                mTvNum.setBackgroundColor(0xfff66e3c);
                 break;
             case 128:
-                mTvNum.setBackgroundColor(0xffedcf72);
+                mTvNum.setBackgroundColor(0xffedcf74);
                 break;
             case 256:
-                mTvNum.setBackgroundColor(0xffedcc61);
+                mTvNum.setBackgroundColor(0xffedcc64);
                 break;
             case 512:
-                mTvNum.setBackgroundColor(0xffedc850);
+                mTvNum.setBackgroundColor(0xffedc854);
                 break;
             case 1024:
-                mTvNum.setBackgroundColor(0xffedc53f);
+                mTvNum.setBackgroundColor(0xffedc54f);
                 break;
             case 2048:
-                mTvNum.setBackgroundColor(0xffedc22e);
+                mTvNum.setBackgroundColor(0xffedc32e);
                 break;
             default:
-                mTvNum.setBackgroundColor(0xff3c3a32);
+                mTvNum.setBackgroundColor(0xff3c4a34);
                 break;
         }
     }

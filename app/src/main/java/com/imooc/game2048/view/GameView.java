@@ -13,6 +13,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.EditText;
 import android.widget.GridLayout;
 
@@ -110,9 +112,21 @@ public class GameView extends GridLayout implements OnTouchListener {
             Point randomPoint = mBlanks.get(randomNum);
             mGameMatrix[randomPoint.x][randomPoint.y]
                     .setNum(Math.random() > 0.2d ? 2 : 4);
-            Game.getGameActivity().getAnimationLayer()
-                    .animCreate(mGameMatrix[randomPoint.x][randomPoint.y]);
+            animCreate(mGameMatrix[randomPoint.x][randomPoint.y]);
         }
+    }
+
+    /**
+     * 生成动画
+     *
+     * @param target GameItem
+     */
+    private void animCreate(GameItem target) {
+        ScaleAnimation sa = new ScaleAnimation(0.1f, 1, 0.1f, 1,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        sa.setDuration(100);
+        target.setAnimation(null);
+        target.getItemView().startAnimation(sa);
     }
 
     /**
@@ -125,8 +139,7 @@ public class GameView extends GridLayout implements OnTouchListener {
                 int randomNum = (int) (Math.random() * mBlanks.size());
                 Point randomPoint = mBlanks.get(randomNum);
                 mGameMatrix[randomPoint.x][randomPoint.y].setNum(num);
-                Game.getGameActivity().getAnimationLayer()
-                        .animCreate(mGameMatrix[randomPoint.x][randomPoint.y]);
+                animCreate(mGameMatrix[randomPoint.x][randomPoint.y]);
             }
         }
     }
@@ -243,9 +256,13 @@ public class GameView extends GridLayout implements OnTouchListener {
         int density = getDeviceDensity();
         int slideDis = 5 * density;
         int maxDis = 200 * density;
-        boolean flagNormal = (Math.abs(offsetX) > slideDis || Math.abs(offsetY) > slideDis)
-                && (Math.abs(offsetX) < maxDis) && (Math.abs(offsetY) < maxDis);
-        boolean flagSuper = Math.abs(offsetX) > maxDis || Math.abs(offsetY) > maxDis;
+        boolean flagNormal =
+                (Math.abs(offsetX) > slideDis ||
+                        Math.abs(offsetY) > slideDis) &&
+                        (Math.abs(offsetX) < maxDis) &&
+                        (Math.abs(offsetY) < maxDis);
+        boolean flagSuper = Math.abs(offsetX) > maxDis ||
+                Math.abs(offsetY) > maxDis;
         if (flagNormal && !flagSuper) {
             if (Math.abs(offsetX) > Math.abs(offsetY)) {
                 if (offsetX > slideDis) {
@@ -261,7 +278,8 @@ public class GameView extends GridLayout implements OnTouchListener {
                 }
             }
         } else if (flagSuper) { // 启动超级用户权限来添加自定义数字
-            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            AlertDialog.Builder builder =
+                    new AlertDialog.Builder(getContext());
             final EditText et = new EditText(getContext());
             builder.setTitle("Back Door")
                     .setView(et)

@@ -7,12 +7,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.FrameLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.imooc.game2048.R;
-import com.imooc.game2048.anim.AnimationLayer;
 import com.imooc.game2048.config.Config;
 import com.imooc.game2048.view.GameView;
 
@@ -36,8 +34,6 @@ public class Game extends Activity implements OnClickListener {
     private Button mBtnOptions;
     // 游戏面板
     private GameView mGameView;
-    // 动画层
-    private AnimationLayer mAnimLayer;
 
     public Game() {
         mGame = this;
@@ -58,23 +54,11 @@ public class Game extends Activity implements OnClickListener {
         setContentView(R.layout.activity_main);
         // 初始化View
         initView();
-        mAnimLayer = new AnimationLayer(this);
         mGameView = new GameView(this);
         FrameLayout frameLayout = (FrameLayout) findViewById(R.id.game_panel);
         // 为了GameView能居中
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.game_panel_rl);
-        frameLayout.addView(mAnimLayer, new LayoutParams(
-                LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         relativeLayout.addView(mGameView);
-    }
-
-    /**
-     * 获取当前动画层引用
-     *
-     * @return AnimationLayer.this
-     */
-    public AnimationLayer getAnimationLayer() {
-        return mAnimLayer;
     }
 
     /**
